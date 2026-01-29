@@ -28,56 +28,61 @@
     </div>
 
     <!-- Notes -->
-    {% if user.notes %}
-      <h5 class="mb-3 text-muted">Saved Notes</h5>
+    <div id="notesContainer">
+      {% if user.notes %}
+        <h5 class="mb-3 text-muted">Saved Notes</h5>
 
-      {% for note in user.notes %}
-        <div class="card mb-3 p-3" id="note-{{ note.id }}">
-          <textarea
-            class="form-control mb-2"
-            id="note-text-{{ note.id }}"
-            disabled
-          >{{ note.data }}</textarea>
+        {% for note in user.notes %}
+          <div class="card mb-3 p-3" id="note-{{ note.id }}">
+            <textarea
+              class="form-control mb-2"
+              id="note-text-{{ note.id }}"
+              disabled
+            >{{ note.data }}</textarea>
 
-          <div class="d-flex justify-content-end gap-2">
-            <button
-              class="btn btn-sm btn-outline-primary"
-              onclick="editNote({{ note.id }})"
-              id="edit-btn-{{ note.id }}"
-            >
-              ✏️ Edit
-            </button>
+            <div class="d-flex justify-content-end gap-2">
+              <button
+                class="btn btn-sm btn-outline-primary"
+                onclick="editNote({{ note.id }})"
+                id="edit-btn-{{ note.id }}"
+              >
+                ✏️ Edit
+              </button>
 
-            <button
-              class="btn btn-sm btn-outline-success d-none"
-              onclick="saveNote({{ note.id }})"
-              id="save-btn-{{ note.id }}"
-            >
-              💾 Save
-            </button>
+              <button
+                class="btn btn-sm btn-outline-success d-none"
+                onclick="saveNote({{ note.id }})"
+                id="save-btn-{{ note.id }}"
+              >
+                💾 Save
+              </button>
 
-            <button
-              class="btn btn-sm btn-outline-danger"
-              onclick="deleteNote({{ note.id }})"
-            >
-              ❌
-            </button>
+              <button
+                class="btn btn-sm btn-outline-danger"
+                onclick="deleteNote({{ note.id }})"
+              >
+                ❌
+              </button>
+            </div>
           </div>
-        </div>
-      {% endfor %}
-    {% else %}
-      <p class="text-center text-muted">No notes yet ☝️</p>
-    {% endif %}
+        {% endfor %}
+      {% else %}
+        <p class="text-center text-muted">No notes yet ☝️</p>
+      {% endif %}
+    </div>
 
   </div>
 </div>
 
 <script>
-/* ADD NOTE (NO RELOAD) */
-document.getElementById("noteForm").addEventListener("submit", function(e) {
-  e.preventDefault(); // 🚫 stop reload
+/* ADD NOTE — NO RELOAD, NO FLICKER */
+document.getElementById("noteForm").addEventListener("submit", function (e) {
+  e.preventDefault();
 
-  const text = document.getElementById("noteInput").value;
+  const textarea = document.getElementById("noteInput");
+  const text = textarea.value.trim();
+
+  if (!text) return;
 
   fetch("/add-note", {
     method: "POST",
@@ -88,7 +93,26 @@ document.getElementById("noteForm").addEventListener("submit", function(e) {
   })
   .then(res => res.json())
   .then(data => {
-    location.reload(); // simple & safe refresh
+    // clear textarea immediately ✅
+    textarea.value = "";
+
+    // optionally add note dynamically (smooth UX)
+    const notesContainer = document.getElementById("notesContainer");
+
+    const noteDiv = document.createElement("div");
+    noteDiv.className = "card mb-3 p-3";
+    noteDiv.id = `note-${data.id}`;
+
+    noteDiv.innerHTML = `
+      <textarea class="form-control mb-2" id="note-text-${data.id}" disabled>${text}</textarea>
+      <div class="d-flex justify-content-end gap-2">
+        <button class="btn btn-sm btn-outline-primary" onclick="editNote(${data.id})" id="edit-btn-${data.id}">✏️ Edit</button>
+        <button class="btn btn-sm btn-outline-success d-none" onclick="saveNote(${data.id})" id="save-btn-${data.id}">💾 Save</button>
+        <button class="btn btn-sm btn-outline-danger" onclick="deleteNote(${data.id})">❌</button>
+      </div>
+    `;
+
+    notesContainer.prepend(noteDiv);
   });
 });
 
@@ -105,7 +129,7 @@ function saveNote(noteId) {
 
   fetch("/edit-note", {
     method: "POST",
-    body: JSON.stringify({ noteId: noteId, text: text }),
+    body: JSON.stringify({ noteId, text }),
     headers: {
       "Content-Type": "application/json"
     }
@@ -120,7 +144,7 @@ function saveNote(noteId) {
 function deleteNote(noteId) {
   fetch("/delete-note", {
     method: "POST",
-    body: JSON.stringify({ noteId: noteId }),
+    body: JSON.stringify({ noteId }),
     headers: {
       "Content-Type": "application/json"
     }

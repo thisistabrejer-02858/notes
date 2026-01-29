@@ -13,16 +13,12 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     db.init_app(app)
 
-  # 🔥 HEALTH CHECK ROUTE (CRITICAL FOR RAILWAY)
-    @app.route("/")
-    def health():
-        return "OK", 200
     
     from .views import views
     from .auth import auth
 
-    app.register_blueprint(views, url_prefix='/app')
-    app.register_blueprint(auth, url_prefix='/app')
+    app.register_blueprint(views, url_prefix='/')
+    app.register_blueprint(auth, url_prefix='/')
 
     from .models import User, Note
     

@@ -13,6 +13,11 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     db.init_app(app)
 
+  # 🔥 HEALTH CHECK ROUTE (CRITICAL FOR RAILWAY)
+    @app.route("/")
+    def health():
+        return "OK", 200
+    
     from .views import views
     from .auth import auth
 
@@ -34,6 +39,7 @@ def create_app():
 
     return app
 
+   
 
 def create_database(app):
     if not path.exists('website/' + DB_NAME):

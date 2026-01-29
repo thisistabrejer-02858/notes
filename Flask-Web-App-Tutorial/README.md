@@ -1,37 +1,41 @@
-# Flask Web App Tutorial
+# 📝 Flask Notes App
 
-## Setup & Installation
+A clean and modern Notes web application built using Flask with user authentication, dashboard UI, and dark mode support.
 
-Make sure you have the latest version of Python installed.
+---
+
+## 🚀 Features
+- User authentication (Login / Signup / Logout)
+- Create and delete personal notes
+- Dashboard-style UI
+- Dark mode with preference saved in browser
+- Responsive design using Bootstrap
+- Smooth animations and icon-based UI
+- Clean template inheritance (`base.html`)
+
+---
+
+## 🛠 Tech Stack
+- **Backend:** Flask, Flask-Login, SQLAlchemy
+- **Frontend:** HTML, CSS, Bootstrap 4
+- **Database:** SQLite
+- **Extras:** Font Awesome, JavaScript (localStorage)
+
+---
+
+## 📸 Screenshots
+> Light Mode  
+> Dark Mode  
+> Notes Dashboard
+
+(Add screenshots here)
+
+---
+
+## ▶️ Run Locally
 
 ```bash
-git clone <repo-url>
-```
-
-```bash
+git clone https://github.com/your-username/flask-notes-app.git
+cd flask-notes-app
 pip install -r requirements.txt
-```
-
-## Running The App
-
-```bash
 python main.py
-```
-
-## Viewing The App
-
-Go to `http://127.0.0.1:5000`
-
-
-# 💻 Launch Your Software Development Career Today!  
-
-🎓 **No degree? No problem!** My program equips you with everything you need to break into tech and land an entry-level software development role.  
-
-🚀 **Why Join?**  
-- 💼 **$70k+ starting salary potential**  
-- 🕐 **Self-paced:** Complete on your own time  
-- 🤑 **Affordable:** Low risk compared to expensive bootcamps or degrees
-- 🎯 **45,000+ job openings** in the market  
-
-👉 **[Start your journey today!](https://techwithtim.net/dev)**  
-No experience needed—just your determination. Future-proof your career and unlock six-figure potential like many of our students have!  

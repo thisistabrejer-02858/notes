@@ -1,0 +1,213 @@
+body {
+  background: red !important;
+}
+/* Smooth transitions for theme change */
+* {
+  transition: background-color 0.3s ease,
+              color 0.3s ease,
+              box-shadow 0.3s ease,
+              transform 0.3s ease,
+              border-color 0.3s ease;
+}
+
+body {
+  background: linear-gradient(120deg, #f4f7fb, #e9eff5) !important;
+}
+
+.navbar.navbar-dark {
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.container {
+  max-width: 900px;
+}
+
+textarea.form-control {
+  border-radius: 12px;
+  min-height: 120px;
+}
+
+button.btn-primary {
+  border-radius: 12px;
+  padding: 8px 22px;
+  font-weight: 600;
+}
+
+.note-item {
+  background: #ffffff;
+  padding: 15px 18px;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.note-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+}
+
+.note-item p {
+  font-size: 15px;
+  color: #333;
+}
+
+/* ===== DARK MODE ===== */
+
+body.dark-mode {
+  background: #121212;
+  color: #e0e0e0;
+}
+
+body.dark-mode .navbar {
+  background-color: #1f1f1f !important;
+}
+
+body.dark-mode .card,
+body.dark-mode .note-item {
+  background: #1e1e1e;
+  color: #e0e0e0;
+}
+
+body.dark-mode textarea,
+body.dark-mode input {
+  background: #2a2a2a;
+  color: #ffffff;
+  border: 1px solid #444;
+}
+
+body.dark-mode textarea::placeholder {
+  color: #aaaaaa;
+}
+
+body.dark-mode .btn-outline-danger {
+  border-color: #ff6b6b;
+  color: #ff6b6b;
+}
+
+body.dark-mode .btn-outline-danger:hover {
+  background: #ff6b6b;
+  color: #000;
+}
+/* Fix heading visibility in dark mode */
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5 {
+  color: #ffffff !important;
+}
+body.dark-mode .page-title,
+body.dark-mode h2.text-center {
+  color: #f1f1f1 !important;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* ============================= */
+/*        DARK MODE FIXES        */
+/* ============================= */
+
+body.dark-mode {
+  background: #121212 !important;
+  color: #eaeaea !important;
+}
+
+/* Headings */
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5 {
+  color: #ffffff !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+
+/* Page title */
+body.dark-mode h2.text-center {
+  color: #ffffff !important;
+}
+
+/* Navbar */
+body.dark-mode .navbar {
+  background-color: #1c1c1c !important;
+}
+
+/* Cards (Add note + notes list) */
+body.dark-mode .card,
+body.dark-mode .note-item {
+  background: #1e1e1e !important;
+  color: #f1f1f1 !important;
+}
+
+/* Saved Notes label */
+body.dark-mode .text-muted {
+  color: #cccccc !important;
+}
+
+/* Notes text */
+body.dark-mode .note-item p,
+body.dark-mode .note-item span {
+  color: #f5f5f5 !important;
+}
+
+/* Textarea & inputs */
+body.dark-mode textarea,
+body.dark-mode input {
+  background: #2a2a2a !important;
+  color: #ffffff !important;
+  border: 1px solid #444 !important;
+}
+
+body.dark-mode textarea::placeholder {
+  color: #aaaaaa !important;
+}
+
+/* Buttons */
+body.dark-mode .btn-primary {
+  background-color: #0d6efd !important;
+  border-color: #0d6efd !important;
+}
+
+body.dark-mode .btn-outline-danger {
+  color: #ff6b6b !important;
+  border-color: #ff6b6b !important;
+}
+
+body.dark-mode .btn-outline-danger:hover {
+  background: #ff6b6b !important;
+  color: #000 !important;
+}
+
+.card,
+.note-item {
+  animation: fadeUp 0.5s ease;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.note-item:hover {
+  transform: scale(1.02);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.btn {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+.btn:active {
+  transform: scale(0.97);
+}

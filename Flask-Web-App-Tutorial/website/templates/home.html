@@ -1,21 +1,133 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
-%}
-<h1 align="center">Notes</h1>
-<ul class="list-group list-group-flush" id="notes">
-  {% for note in user.notes %}
-  <li class="list-group-item">
-    {{ note.data }}
-    <button type="button" class="close" onClick="deleteNote({{ note.id }})">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </li>
-  {% endfor %}
-</ul>
-<form method="POST">
-  <textarea name="note" id="note" class="form-control"></textarea>
-  <br />
-  <div align="center">
-    <button type="submit" class="btn btn-primary">Add Note</button>
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h2 class="text-center mb-4">Your Notes 📝</h2>
+
+<div class="row justify-content-center">
+  <div class="col-md-8">
+
+    <!-- Add Note -->
+    <div class="card p-4 shadow-sm mb-5">
+      <form id="noteForm">
+        <textarea
+          id="noteInput"
+          class="form-control mb-3"
+          placeholder="Write something important..."
+          rows="3"
+          required
+        ></textarea>
+
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary px-4">
+            ➕ Add Note
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Notes -->
+    {% if user.notes %}
+      <h5 class="mb-3 text-muted">Saved Notes</h5>
+
+      {% for note in user.notes %}
+        <div class="card mb-3 p-3" id="note-{{ note.id }}">
+          <textarea
+            class="form-control mb-2"
+            id="note-text-{{ note.id }}"
+            disabled
+          >{{ note.data }}</textarea>
+
+          <div class="d-flex justify-content-end gap-2">
+            <button
+              class="btn btn-sm btn-outline-primary"
+              onclick="editNote({{ note.id }})"
+              id="edit-btn-{{ note.id }}"
+            >
+              ✏️ Edit
+            </button>
+
+            <button
+              class="btn btn-sm btn-outline-success d-none"
+              onclick="saveNote({{ note.id }})"
+              id="save-btn-{{ note.id }}"
+            >
+              💾 Save
+            </button>
+
+            <button
+              class="btn btn-sm btn-outline-danger"
+              onclick="deleteNote({{ note.id }})"
+            >
+              ❌
+            </button>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p class="text-center text-muted">No notes yet ☝️</p>
+    {% endif %}
+
   </div>
-</form>
+</div>
+
+<script>
+/* ADD NOTE (NO RELOAD) */
+document.getElementById("noteForm").addEventListener("submit", function(e) {
+  e.preventDefault(); // 🚫 stop reload
+
+  const text = document.getElementById("noteInput").value;
+
+  fetch("/add-note", {
+    method: "POST",
+    body: JSON.stringify({ note: text }),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+  .then(res => res.json())
+  .then(data => {
+    location.reload(); // simple & safe refresh
+  });
+});
+
+/* EDIT NOTE */
+function editNote(noteId) {
+  document.getElementById(`note-text-${noteId}`).disabled = false;
+  document.getElementById(`edit-btn-${noteId}`).classList.add("d-none");
+  document.getElementById(`save-btn-${noteId}`).classList.remove("d-none");
+}
+
+/* SAVE NOTE */
+function saveNote(noteId) {
+  const text = document.getElementById(`note-text-${noteId}`).value;
+
+  fetch("/edit-note", {
+    method: "POST",
+    body: JSON.stringify({ noteId: noteId, text: text }),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }).then(() => {
+    document.getElementById(`note-text-${noteId}`).disabled = true;
+    document.getElementById(`edit-btn-${noteId}`).classList.remove("d-none");
+    document.getElementById(`save-btn-${noteId}`).classList.add("d-none");
+  });
+}
+
+/* DELETE NOTE */
+function deleteNote(noteId) {
+  fetch("/delete-note", {
+    method: "POST",
+    body: JSON.stringify({ noteId: noteId }),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }).then(() => {
+    document.getElementById(`note-${noteId}`).remove();
+  });
+}
+</script>
+
 {% endblock %}
